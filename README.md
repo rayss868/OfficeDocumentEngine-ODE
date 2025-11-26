@@ -108,7 +108,7 @@ Before you begin, ensure you have the following installed:
 Follow these commands to set up the ODE server:
 ```bash
 # 1. Navigate into the server's directory
-cd mcp-server
+cd OfficeDocumentEngine-ODE
 
 # 2. Install all dependencies
 npm install
