@@ -30,6 +30,7 @@
     - [`excel_create_table`](#excel_create_table)
     - [`excel_format_range`](#excel_format_range)
     - [`excel_extract_images`](#excel_extract_images)
+    - [`excel_screen_capture`](#excel_screen_capture)
   - [📄 **PDF Tools**](#-pdf-tools)
     - [`pdf_read_text`](#pdf_read_text)
     - [`pdf_get_metadata`](#pdf_get_metadata)
@@ -39,6 +40,7 @@
     - [`pdf_merge`](#pdf_merge)
     - [`pdf_split`](#pdf_split)
     - [`pdf_rotate_pages`](#pdf_rotate_pages)
+    - [`pdf_get_text_positions`](#pdf_get_text_positions)
   - [📝 **DOCX Tools**](#-docx-tools)
     - [`docx_read_text`](#docx_read_text)
     - [`docx_get_metadata`](#docx_get_metadata)
@@ -61,7 +63,7 @@ ODE stands out with its comprehensive and flexible feature set:
 
 *   **Cross-Document Compatibility**: A unified interface to manage Excel, PDF, and DOCX files, eliminating the need for disparate tools.
 *   **Intelligent Data Extraction**: Precisely read data from Excel sheets, extract text from PDFs and DOCX files, and retrieve valuable metadata.
-*   **Dynamic Document Generation**: Create new Excel files, write data to specific cells, generate simple PDFs, and build DOCX content on the fly.
+*   **Dynamic Document Generation**: Create new Excel files, write data to specific cells, and generate simple PDFs on the fly.
 *   **Advanced Document Manipulation**: Merge, split, rotate PDF pages, copy Excel sheets, format cell ranges, and define structured tables within workbooks.
 *   **Image Handling**: Extract embedded images from Excel files for further analysis or archiving.
 *   **Seamless AI Integration**: Built on the Model Context Protocol (MCP), ODE is designed from the ground up to integrate effortlessly with AI agents, enabling sophisticated automated workflows.
@@ -101,7 +103,7 @@ Embark on your automation journey with ODE in a few simple steps:
 
 ### Prerequisites
 Before you begin, ensure you have the following installed:
-- **Node.js** (version 16.x or higher)
+- **Node.js** (version 18.x or higher)
 - **npm** (usually included with Node.js)
 
 ### Installation
@@ -130,9 +132,9 @@ To enable your AI environment to communicate with the ODE server, add the follow
         "timeout": 60,
         "command": "node",
         "args": [
-            "<path-to-your-project>/mcp-server/build/index.js"
+            "<path-to-your-project>/build/index.js"
         ],
-        "cwd": "<path-to-your-project>/mcp-server"
+        "cwd": "<path-to-your-project>"
     }
   }
 }
@@ -225,6 +227,15 @@ These powerful tools enable you to programmatically interact with Microsoft Exce
     *   **Returns:** An object confirming the extraction and listing the saved image paths.
     *   **Example Use Case:** Extract all product images from a "Product Catalog" Excel file to update an e-commerce website's image gallery.
 
+8.  **`excel_screen_capture`** *(placeholder)*
+    *   **Description:** Capture a visual representation of a sheet or a specific cell range as an image. **This tool is not yet implemented**: rendering an Excel range to a picture requires Excel/COM automation or a headless renderer, which this pure-Node server does not include. Calling it returns a descriptive note along with the resolved arguments.
+    *   **Input:**
+        *   `fileAbsolutePath` (string): The absolute path to the Excel file.
+        *   `sheetName` (optional, string): The name of the sheet to capture.
+        *   `range` (optional, string): A specific cell range to capture (e.g., "A1:C10").
+    *   **Returns:** An object echoing the resolved file, sheet, range, and a `note` explaining that capture is not implemented.
+    *   **Example Use Case:** Intended for generating thumbnail previews of report ranges once a rendering backend is added.
+
 ### 📄 PDF Tools
 
 These robust tools provide extensive capabilities for reading, manipulating, and generating PDF documents, enabling powerful automation for your digital paperwork.
@@ -300,6 +311,14 @@ These robust tools provide extensive capabilities for reading, manipulating, and
         *   `outputFilePath` (string): The absolute path where the modified PDF will be saved.
     *   **Returns:** An object confirming the successful rotation.
     *   **Example Use Case:** Rotate a landscape-oriented chart page in a portrait PDF report by 90 degrees to make it readable without changing the entire document's orientation.
+
+9.  **`pdf_get_text_positions`** *(placeholder)*
+    *   **Description:** Retrieve text together with its X/Y coordinates on a given page. **This tool is not yet implemented**: the underlying `pdf-parse` library does not expose glyph coordinates, so it returns an empty `items` array plus a note. Full support would require an advanced PDF rendering library or custom content-stream parsing.
+    *   **Input:**
+        *   `fileAbsolutePath` (string): The absolute path to the PDF file.
+        *   `pageNumber` (number): The 1-based page number to inspect.
+    *   **Returns:** An object containing the file path, page number, an empty `items` array, and a `note` explaining the limitation.
+    *   **Example Use Case:** Intended for layout analysis, such as locating where a signature or stamp sits on a page, once coordinate extraction is available.
 
 ### 📝 DOCX Tools
 
