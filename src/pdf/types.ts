@@ -1,13 +1,13 @@
 import { z } from "zod";
 
 export const PdfReadTextShape = {
-  fileAbsolutePath: z.string().describe("The absolute path to the PDF file to be read. IMPORTANT: This function uses the 'pdf-parse' library and is INCOMPATIBLE with PDFs created by this engine's modification tools (e.g., pdf_create_dummy, pdf_merge). Use only on external, standard PDFs."),
+  fileAbsolutePath: z.string().describe("The absolute path to the PDF file to be read."),
   pageNumbers: z.array(z.number().int().min(1)).optional().describe("Optional. An array of 1-indexed page numbers to read. Note: The underlying 'pdf-parse' library does not support selective page reading and will always process the entire document. This parameter is for future compatibility and does not currently affect the output."),
 };
 export const PdfReadTextSchema = z.object(PdfReadTextShape);
 
 export const PdfGetMetadataShape = {
-  fileAbsolutePath: z.string().describe("The absolute path to the PDF file for which to retrieve metadata. IMPORTANT: This function uses the 'pdf-parse' library and is INCOMPATIBLE with PDFs created by this engine's modification tools (e.g., pdf_create_dummy, pdf_merge). Use only on external, standard PDFs."),
+  fileAbsolutePath: z.string().describe("The absolute path to the PDF file for which to retrieve metadata."),
 };
 export const PdfGetMetadataSchema = z.object(PdfGetMetadataShape);
 
@@ -19,7 +19,7 @@ export const PdfExtractPagesShape = {
 export const PdfExtractPagesSchema = z.object(PdfExtractPagesShape);
 
 export const PdfSearchTextShape = {
-  fileAbsolutePath: z.string().describe("The absolute path to the PDF file to be searched. IMPORTANT: This function uses the 'pdf-parse' library and is INCOMPATIBLE with PDFs created by this engine's modification tools. Use only on external, standard PDFs."),
+  fileAbsolutePath: z.string().describe("The absolute path to the PDF file to be searched."),
   searchText: z.string().describe("The text string to search for within the PDF content."),
   caseSensitive: z.boolean().optional().default(false).describe("Optional. If true, the search will be case-sensitive. Defaults to false."),
 };
@@ -48,7 +48,7 @@ export const PdfRotatePagesShape = {
 export const PdfRotatePagesSchema = z.object(PdfRotatePagesShape);
 
 export const PdfGetTextPositionsShape = {
-  fileAbsolutePath: z.string().describe("The absolute path to the PDF file. IMPORTANT: This function uses 'pdf-parse' and is INCOMPATIBLE with PDFs from this engine's modification tools."),
+  fileAbsolutePath: z.string().describe("The absolute path to the PDF file."),
   pageNumber: z.number().int().min(1).describe("The 1-indexed page number from which to retrieve text and its X/Y positions."),
 };
 export const PdfGetTextPositionsSchema = z.object(PdfGetTextPositionsShape);

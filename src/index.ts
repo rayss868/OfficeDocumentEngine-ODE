@@ -171,7 +171,16 @@ class McpOfficeDocumentEngineServer {
     ];
 
     this.server.setRequestHandler(ListToolsRequestSchema, async () => ({
-      tools: toolDefinitions,
+      // Zod schema wajib dikonversi ke JSON Schema. Tanpa ini, clients hanya
+      // menerima internal Zod ({"def":...,"shape":...}) tanpa "properties"/"required",
+      // sehingga menganggap tool tidak butuh argumen dan memanggilnya kosong.
+      tools: toolDefinitions.map((tool) => ({
+        ...tool,
+        inputSchema: z.toJSONSchema(tool.inputSchema as z.ZodType, {
+          io: "input",
+          unrepresentable: "any",
+        }),
+      })),
     }));
 
     this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
