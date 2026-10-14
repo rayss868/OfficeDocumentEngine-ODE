@@ -243,6 +243,9 @@ These robust tools provide extensive capabilities for reading, manipulating, and
 > ### ℹ️ **PDF Buffer Handling Note**
 > The PDF tools within ODE utilize two distinct underlying libraries: `pdf-parse` for reading operations and `pdf-lib` for modification operations. On recent Node versions, `pdf-parse` (pdfjs) rejects a raw `Buffer` with `bad XRef entry`, so the helpers convert files to `Uint8Array` before parsing. With that conversion in place, PDFs created or altered by `pdf-lib` tools are readable by the reading tools as well.
 
+> ### ⚠️ **Scanned / Image-Only PDFs**
+> The reading tools (`pdf_read_text`, `pdf_get_metadata`, `pdf_search_text`) only extract an existing **text layer**. Scanned or canvas-rendered PDFs store their content as embedded images with no fonts and no text operators, so `pdf_read_text` returns `text: ""` and `pdf_search_text` finds nothing. This is expected, not a bug. To read such documents you must first run OCR (e.g., Tesseract) to add a text layer, or extract the embedded image and process it with a vision model.
+
 1.  **`pdf_read_text`**
     *   **Description:** Extract the complete textual content from any PDF file. This is an essential tool for content analysis, data mining, converting PDF content to searchable text, or preparing documents for summarization by other AI agents.
     *   **Input:**
