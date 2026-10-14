@@ -30,4 +30,15 @@ export async function loadPdfLibDoc(fileAbsolutePath: string) {
   return { pdfDoc, resolved };
 }
 
+/**
+ * Mendeteksi apakah PDF memiliki lapisan teks asli.
+ * PDF hasil scan/render canvas hanya berisi gambar tanpa font maupun operator
+ * teks, sehingga ekstraksi teks selalu kosong. Deteksi dilakukan pada byte
+ * mentah karena kamus resource halaman umumnya tidak terkompresi.
+ */
+export function hasTextLayer(dataBuffer: Uint8Array): boolean {
+  const raw = Buffer.from(dataBuffer).toString("latin1");
+  return /\/Font\b/.test(raw) || /\/ToUnicode\b/.test(raw);
+}
+
 export const PDFParser = (dataBuffer: Uint8Array) => pdfParse(dataBuffer);

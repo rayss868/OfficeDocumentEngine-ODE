@@ -244,14 +244,14 @@ These robust tools provide extensive capabilities for reading, manipulating, and
 > The PDF tools within ODE utilize two distinct underlying libraries: `pdf-parse` for reading operations and `pdf-lib` for modification operations. On recent Node versions, `pdf-parse` (pdfjs) rejects a raw `Buffer` with `bad XRef entry`, so the helpers convert files to `Uint8Array` before parsing. With that conversion in place, PDFs created or altered by `pdf-lib` tools are readable by the reading tools as well.
 
 > ### ⚠️ **Scanned / Image-Only PDFs**
-> The reading tools (`pdf_read_text`, `pdf_get_metadata`, `pdf_search_text`) only extract an existing **text layer**. Scanned or canvas-rendered PDFs store their content as embedded images with no fonts and no text operators, so `pdf_read_text` returns `text: ""` and `pdf_search_text` finds nothing. This is expected, not a bug. To read such documents you must first run OCR (e.g., Tesseract) to add a text layer, or extract the embedded image and process it with a vision model.
+> The reading tools (`pdf_read_text`, `pdf_get_metadata`, `pdf_search_text`) only extract an existing **text layer**. Scanned or canvas-rendered PDFs store their content as embedded images with no fonts and no text operators, so `pdf_read_text` returns `text: ""` and `pdf_search_text` finds nothing. This is expected, not a bug. When that happens, `pdf_read_text` sets `isImageOnly: true` and includes a `note` explaining that the PDF's pages are images with no extractable text.
 
 1.  **`pdf_read_text`**
     *   **Description:** Extract the complete textual content from any PDF file. This is an essential tool for content analysis, data mining, converting PDF content to searchable text, or preparing documents for summarization by other AI agents.
     *   **Input:**
         *   `fileAbsolutePath` (string): The absolute path to the PDF file (e.g., `C:/path/to/annual_report.pdf`).
         *   `pageNumbers` (optional, array of numbers): An array of 1-based page numbers (e.g., `[1, 5, 8]`) to limit text extraction to specific pages. If omitted, text from all pages is extracted.
-    *   **Returns:** An object containing the file path, total pages, and the extracted text (e.g., `{ file: string, totalPages: number, text: string }`).
+    *   **Returns:** An object containing the file path, total pages, the extracted text, and an `isImageOnly` flag (e.g., `{ file: string, totalPages: number, text: string, isImageOnly: boolean, note?: string }`). When `isImageOnly` is `true`, `text` is empty and `note` explains that the pages are images.
     *   **Example Use Case:** Automatically extract all clauses from a legal contract PDF to perform a compliance check or identify key terms.
 
 2.  **`pdf_get_metadata`**
