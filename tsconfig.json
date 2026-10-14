@@ -11,5 +11,5 @@
     "rootDir": "./src"
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "src/pdf/pdfTools.ts"]
+  "exclude": ["node_modules"]
 }

@@ -19,6 +19,7 @@ import {
   ExcelCreateTableSchema,
   ExcelFormatRangeSchema,
   ExcelExtractImagesSchema,
+  ExcelScreenCaptureSchema,
 } from "./excel/types";
 
 // PDF Imports
@@ -108,13 +109,18 @@ class McpOfficeDocumentEngineServer {
         inputSchema: ExcelExtractImagesSchema,
       },
       {
+        name: "excel_screen_capture",
+        description: "Placeholder: captures a visual representation of a sheet or range. Not yet implemented (requires Excel/COM or a headless renderer). Example: {'fileAbsolutePath': 'C:/path/to/file.xlsx', 'sheetName': 'Sheet1', 'range': 'A1:C10'}",
+        inputSchema: ExcelScreenCaptureSchema,
+      },
+      {
         name: "pdf_read_text",
-        description: "Extracts all text content from a PDF file. IMPORTANT: Incompatible with PDFs created by this engine's modification tools. Example: {'fileAbsolutePath': 'C:/path/to/report.pdf'}",
+        description: "Extracts all text content from a PDF file. Example: {'fileAbsolutePath': 'C:/path/to/report.pdf'}",
         inputSchema: PdfReadTextSchema,
       },
       {
         name: "pdf_get_metadata",
-        description: "Retrieves metadata (Author, Creator, etc.) from a PDF file. IMPORTANT: Incompatible with PDFs created by this engine's modification tools. Example: {'fileAbsolutePath': 'C:/path/to/report.pdf'}",
+        description: "Retrieves metadata (Author, Creator, etc.) from a PDF file. Example: {'fileAbsolutePath': 'C:/path/to/report.pdf'}",
         inputSchema: PdfGetMetadataSchema,
       },
       {
@@ -193,6 +199,9 @@ class McpOfficeDocumentEngineServer {
             break;
           case "excel_extract_images":
             result = await excel.excel_extract_images(ExcelExtractImagesSchema.parse(request.params.arguments));
+            break;
+          case "excel_screen_capture":
+            result = await excel.excel_screen_capture(ExcelScreenCaptureSchema.parse(request.params.arguments));
             break;
           case "pdf_read_text":
             result = await pdf.pdf_read_text(PdfReadTextSchema.parse(request.params.arguments));

@@ -229,8 +229,8 @@ These powerful tools enable you to programmatically interact with Microsoft Exce
 
 These robust tools provide extensive capabilities for reading, manipulating, and generating PDF documents, enabling powerful automation for your digital paperwork.
 
-> ### ⚠️ **Critical Incompatibility Note**
-> The PDF tools within ODE utilize two distinct underlying libraries: `pdf-parse` for reading operations and `pdf-lib` for modification operations. It is crucial to understand that these libraries are **incompatible** with each other. Therefore, you should use reading tools **only** on external, standard PDF files that have not been modified by ODE's own modification tools. Attempting to read a PDF that was just created or altered by `pdf-lib` tools may lead to unexpected results or errors.
+> ### ℹ️ **PDF Buffer Handling Note**
+> The PDF tools within ODE utilize two distinct underlying libraries: `pdf-parse` for reading operations and `pdf-lib` for modification operations. On recent Node versions, `pdf-parse` (pdfjs) rejects a raw `Buffer` with `bad XRef entry`, so the helpers convert files to `Uint8Array` before parsing. With that conversion in place, PDFs created or altered by `pdf-lib` tools are readable by the reading tools as well.
 
 1.  **`pdf_read_text`**
     *   **Description:** Extract the complete textual content from any PDF file. This is an essential tool for content analysis, data mining, converting PDF content to searchable text, or preparing documents for summarization by other AI agents.

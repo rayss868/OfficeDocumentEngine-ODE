@@ -9,7 +9,14 @@ export async function loadPdf(fileAbsolutePath: string) {
   if (!fs.existsSync(resolved)) {
     throw new Error(`PDF file not found: ${resolved}`);
   }
-  const dataBuffer = fs.readFileSync(resolved);
+  const fileBuffer = fs.readFileSync(resolved);
+  // pdf-parse (berbasis pdfjs) dapat gagal membaca Node Buffer pada Node versi
+  // terbaru ("bad XRef entry"). Konversi ke Uint8Array membuat parsing berhasil.
+  const dataBuffer = new Uint8Array(
+    fileBuffer.buffer,
+    fileBuffer.byteOffset,
+    fileBuffer.byteLength
+  );
   return { dataBuffer, resolved };
 }
 
@@ -23,4 +30,4 @@ export async function loadPdfLibDoc(fileAbsolutePath: string) {
   return { pdfDoc, resolved };
 }
 
-export const PDFParser = (dataBuffer: Buffer) => pdfParse(dataBuffer);
+export const PDFParser = (dataBuffer: Uint8Array) => pdfParse(dataBuffer);
